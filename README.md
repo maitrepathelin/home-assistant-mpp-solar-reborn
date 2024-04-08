@@ -39,7 +39,7 @@
 3. Installer [USPIPD-WIN](https://learn.microsoft.com/fr-fr/windows/wsl/connect-usb "USPIPD-WIN") pour connecter le port usb de l'onduleur à WSL.
 
 4. Tester la connexion avec WSL, les commandes powershell sont ici : 
-`usbipd bind --busid 4-2` 4-2 est à changer en fonction de la liste de port
+`usbipd bind --busid 4-2` (4-2 est à changer en fonction de la liste de port), 
 à éxécuter qu'une seule fois pour mettre le port en partage, survit au reboot
 `usbipd attach --wsl --busid 4-2` 
 à exécuter à chaque déco reco du port usb. J'ai déjà automatisé à l'ouverture de session avec le script USB_WSL.ps1, penser à adapter le délai d'attente si WSL est long à se lancer
