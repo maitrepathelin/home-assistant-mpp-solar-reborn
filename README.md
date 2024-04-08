@@ -38,16 +38,18 @@
 
 3. Installer [USPIPD-WIN](https://learn.microsoft.com/fr-fr/windows/wsl/connect-usb "USPIPD-WIN") pour connecter le port usb de l'onduleur à WSL.
 
-4. Tester la connexion avec WSL, les commandes powershell sont ici : 
+4. Tester la connexion avec WSL, les commandes powershell sont ici :
+   
 `usbipd bind --busid 4-2` (4-2 est à changer en fonction de la liste de port), 
 à éxécuter qu'une seule fois pour mettre le port en partage, survit au reboot
+
 `usbipd attach --wsl --busid 4-2` 
 à exécuter à chaque déco reco du port usb. J'ai déjà automatisé à l'ouverture de session avec le script USB_WSL.ps1, penser à adapter le délai d'attente si WSL est long à se lancer
 *todo : rajouter l'éxécution régulière du script si le port USB se deco à postériori*
 
 Aller voir ensuite dans la console Debian si le port USB est bien présent avec la commande `ls /dev` , on doit avoir normalement **ttyUSB0** , c'est notre onduleur. 
 
-6. Rendre ttyUSB0 accessible sans sudo : 
+5. Rendre ttyUSB0 accessible sans sudo : 
 Un problème compliqué à résoudre à été de donner accès au port usb à mpp-solar sans devoir taper le mot de passe sudo (car les commandes sont envoyées par powershell httplistener). 
 
 Pour cela il faut déjà activer **systemd** dans WSL, procédure décrite [ici](https://learn.microsoft.com/fr-fr/windows/wsl/systemd "ici")
