@@ -2,6 +2,9 @@
 
 ##### Voici mon projet complet pour piloter et gérer mon onduleur solaire sur Home Assistant. Ce projet peut vous intéressez si vous avez un onduleur avec le protocole PI30 (voir [ici pour le protocole](https://github.com/jblance/mpp-solar/tree/master/docs/protocols "ici pour le protocole")) ou équivalent.
 
+![image](https://github.com/maitrepathelin/home-assistant-mpp-solar-rethinked/assets/11854885/bbb1ba7a-ee66-4062-bdf6-99e7035bb13c)
+
+
 
 ------------
 
