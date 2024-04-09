@@ -171,13 +171,16 @@ C'est ce flow qui fait 99,99% du travail :
  - Il vérifie le retour des commandes, si elles ne sont pas conformes alors ca veut dire que soit l'onduleur est débranché, soit le HttpListener pas à l'écoute, et donc déclenche des capteurs binaires pour signaler l'erreur à HomeAssistant
 
 **Ce flow est fonctionnel, et permet de récupérer quasi en direct l'ensemble des valeurs de l'onduleur de manière fiable, avec détection des erreurs**
-**J'ai commencé à intégrer des commandes, notamment pour définir la puissance de rechargement sur EDF (2 ou 10 A) et le mode (sortie solaire->batterie->EDF / sortie EDF). De par la conception du flow il est très simple de rajouter des commandes et facilement compréhensible, n'hésitez pas à rajouter vos commandes !**
+
+
+**J'ai commencé à intégrer des commandes, notamment pour définir la puissance de rechargement sur EDF (2 ou 10 A) et le mode (sortie solaire->batterie->EDF / sortie EDF). De par la conception du flow il est très simple de rajouter des commandes et facilement compréhensible, n'hésitez pas à rajouter vos commandes ! Sinon je le ferais au fur à et à mesure que j'en ai besoin.**
 
 9. Les 00,01% sur HomeAssistant
 
 Il s'agit simplement de transformer des valeurs numériques en texte pour que ce soit plus visuel, notamment sur l'état du mode de sortie (SBU/EDF), le mode de rechargement, et une erreur de communication USB. 
 
 Intégrer ces lignes dans votre fichier configuration.yaml de HomeAssistant. 
+[configuratio.yaml HomeAssistant](configuration.yaml)
 
 (petit tips si vous ne l'avez pas déjà, intégrer le plugin VisualCode Server sur HomeAssistant pour modifier rapidemment votre configuration)
 
