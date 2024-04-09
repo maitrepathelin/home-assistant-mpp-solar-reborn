@@ -177,6 +177,8 @@ C'est ce flow qui fait 99,99% du travail :
  - Il parse le retour des commandes QPIGS et QPIRI (cf fonctions magiques ChatGPT ci dessus) et renvoi les valeurs de l'array dans des capteurs Home Assistant
  - Il vérifie le retour des commandes, si elles ne sont pas conformes alors ca veut dire que soit l'onduleur est débranché, soit le HttpListener pas à l'écoute, et donc déclenche des capteurs binaires pour signaler l'erreur à HomeAssistant
 
+Les fonctions de traitement des réponses, cf ci dessus sont plutôt complexes, générées après de longues heures à guider ChatGPT. Notamment car la fonction QPIGS renvoi les valeurs boléennes dans un groupe d'octet, sans espace, et il fallu que la fonction inclus un test de longueur de caractères et décode ces valeurs individuellement, c'était chaud !
+
 **Ce flow est fonctionnel, et permet de récupérer quasi en direct l'ensemble des valeurs de l'onduleur de manière fiable, avec détection des erreurs**
 
 
