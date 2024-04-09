@@ -45,6 +45,9 @@ En revanche concernant l'accès à distance il faut obligatoirement passer par u
 Pourquoi pas de RDP : J'ai des scripts powershell et docker (pas utilisé ici mais pour d'autres projets) qui tournent sur la session et pas en tant que service. Donc j'évite de faire des déco reco en RDP. 
 
 ## Etape de programmation Windows / WSL
+
+(créer toutes les tâches planifiées avec la case "Executer avec les autorisations maximale" sinon ca ne fonctionne pas.)
+
 1. Configurer Windows avec un autologon au démarrage. La plupart des scripts se lancent à l'ouverture de session, j'utilise le programme WITweaker de Arium.
 
 2. Installer WSL avec la distribution debian, penser à supprimer Ubuntu qui est toujours par défaut
@@ -129,7 +132,7 @@ Penser à intégrer ce script en tâche planifié démarrage de windows.
 
 ## Etape de programmation HomeAssistant
 
-1. Installer VirtualBox, pas besoin de décrire. Intégrer le script HAOS.bat à shell:startup de Windows pour démarrer automatiquement la VM. 
+1. Installer VirtualBox, pas besoin de décrire. Intégrer le script [HAOS.bat](HAOS.bat) à shell:startup de Windows pour démarrer automatiquement la VM. 
 
 2. Suivre la documentation HomeAssistant pour installer HAOS sur VirtualBox
 
@@ -137,9 +140,9 @@ Penser à intégrer ce script en tâche planifié démarrage de windows.
 
 4. Démarrer et configurer de manière classique HomeAssistant
 
-5. Installer le plugin Node-Red et Node-red Companion (avec Home Assistant Community Store)
+5. Installer le plugin Node-Red et Node-red Companion (avec Home Assistant Community Store). Node-Red Companion est obligatoire pour créer les entités HomeAssistant depuis le flux.
 
 6. Ne pas oublier de reboot
 
-7. 
+7. Intégrer dans Node-Red 
 
