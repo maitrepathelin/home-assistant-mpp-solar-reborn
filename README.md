@@ -161,7 +161,7 @@ Penser à intégrer ce script en tâche planifié démarrage de windows.
 Le flux est disponible [ICI](flows.json) , importable normalement directement JSON sur Red-Node. 
 
 En revanche en analysant le JSON sur GitHub j'ai des doutes car certaines fonctions sont vraiment complexes (la ligne func: s'affiche en blanc, comme si pas de formattage JSON), je préfère donc les rajouter en plus sur GitHub au besoin, si l'import du fichier flows.json plante alors remplacer par quelque chose de simple style "return msg.payload;" la ligne func: des fonctions ci dessous dans le fichier JSON, importer le flux et recopier le contenu des fonctions dans les noeuds correspondants :
-  - [FX traitement erreur V2](Flow_FX_traitement_reponse_V2.js)
+  - [FX traitement réponse V2](Flow_FX_traitement_reponse_V2.js)
   - [FX traitement réponse QPIGS](Flow_fx_traitement_reponse_QPIGS.js)
   - [Traitement erreur](Flow_traitement_erreur.js)
 
