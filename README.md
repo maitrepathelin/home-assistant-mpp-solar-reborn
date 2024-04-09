@@ -78,6 +78,12 @@ J'ai utilisé ChatGPT pour qu'il me construise un service systemd et qu'il se la
 Ce service scan à intervalle régulier /dev/ttyUSB0 et s'il doit alors il applique un chmod 777.
 
 Se baser sur cette discussion ChatGPT :
+
 [ChatGPT / Créer le service chmod](ChatGPTdiscussion_creer_service.md)
+
+J'avais tenté avant de créer des règles udev mais sans succès, je poste ici quand même la discussion car j'y ai laissé la règle udev NOPASSWD de mpp-solar, à rajouter donc au cas ou, mais normalement pas utile :
+
+[ChatGPT / Créer règle udev](ChatGPTdiscussion_regle_udev.md)
+
 
 
