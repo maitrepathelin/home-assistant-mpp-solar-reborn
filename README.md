@@ -85,5 +85,42 @@ J'avais tenté avant de créer des règles udev mais sans succès, je poste ici 
 
 [ChatGPT / Créer règle udev](ChatGPTdiscussion_regle_udev.md)
 
+**Après ca reboot complet de l'hôte, pas juste WSL**
+
+7. Installation de mpp-solar
+
+Ok, maintenant on a un WSL Debian configuré proprement, on va d'abord installer mpp-solar ce qui nous permettras ensuite de valider l'étape 6.
+
+J'ai tenté d'installer le conteneur docker de mpp-solar mais ce n'était pas pratique. Donc installation par PIP. 
+
+Il faut d'abord créer un environnement virtuel, je l'ai placé dans /home/maitrepathelin/venv. Ca créer un executable Python3.11 dans venv/bin. Quand on va executer la commande d'installation PIP sela placera mpp-solar dans ce dossier bin. Il faudra systématiquement appeller par la suite mpp-solar par ce dossier.
+
+**ATTENTION**
+
+Il y a problème dans le dépôt pip mpp-solar. Si on tente la commande indiqué par jblance, à savoir pip install mpp-solar ca ne fonctionne pas : 
+
+Le dépôt pip s'arrête sur une vieille version et on a un message d'erreur, on peut le forcer mais on installe alors une version périmée. 
+
+La solution est de télécharger le dépôt manuellement dans Debian WSL. Pour installer directement depuis un dépôt suivre cette discussion :
+
+[ChatGPT / Installer dépôt PIP local](ChatGPTdiscussion_installer_depot_pip.md)
+
+8. Tester installation mpp-solar
+
+Pour tester l'installation mpp-solar, depuis un shell powershell sur l'hôte Windows il suffit d'envoyer la commande 
+
+```wsl /home/maitrepathelin/venv/bin/mpp-solar -v``` (affiche la version de mpp-solar)
+
+Ici pas encore besoin de mpp en version sudo, donc on doit juste avoir un retour dans le shell de la version. 
+
+Maintenant envoyer la commande ```wsl /home/maitrepathelin/venv/bin/mpp-solar -p /dev/ttyUSB0 -c QPIRI```
+
+Là il faut que mpp-solar puisse attaquer le port ttyUSB0 sans droit sudo. Si l'étape 5 et 6 est bien passée alors s'affiche dans le sell la configuration de l'onduleur. Sinon si pas de droit sur le port ttyUSB0 alors on a une erreur de permission denied. 
+
+9. Intégrer le daemon d'écoute HTTP
+
+Pour envoyer des commandes depuis home assistant vers mpp-solar j'utilise un petit daemon powershell que ChatGPT m'a concocté. Il réceptionne les httprequest de node-red et les execute 
+
+10. 
 
 
