@@ -162,7 +162,7 @@ En revanche en analysant le JSON sur GitHub j'ai des doutes car certaines foncti
 
 8. Explication du flow Node-Red
 
-C'est ce flow qui fait 100% du travail :
+C'est ce flow qui fait 99,99% du travail :
  - Il créer les entités (boutons, capteur, capteurs binaires) dans HomeAssistant automatiquement grâce à Node-Red Companion
  - Il lance une boucle qui va interroger toutes les 3 secondes les valeurs de production de l'onduleur, commande QPIGS (mpp-solar) en passant par HttpRequest qui envoi la requête au script HttpListener powershell de l'hôte
  - Il lance une boucle qui va interroger toutes les 10 secondes les valeurs de configuration de l'onduleur, commande QPIRI (mpp-solar) en passant par HttpRequest qui envoi la requête au script HttpListener powershell de l'hôte
@@ -172,5 +172,13 @@ C'est ce flow qui fait 100% du travail :
 
 **Ce flow est fonctionnel, et permet de récupérer quasi en direct l'ensemble des valeurs de l'onduleur de manière fiable, avec détection des erreurs**
 **J'ai commencé à intégrer des commandes, notamment pour définir la puissance de rechargement sur EDF (2 ou 10 A) et le mode (sortie solaire->batterie->EDF / sortie EDF). De par la conception du flow il est très simple de rajouter des commandes et facilement compréhensible, n'hésitez pas à rajouter vos commandes !**
+
+9. Les 00,01% sur HomeAssistant
+
+Il s'agit simplement de transformer des valeurs numériques en texte pour que ce soit plus visuel, notamment sur l'état du mode de sortie (SBU/EDF), le mode de rechargement, et une erreur de communication USB. 
+
+Intégrer ces lignes dans votre fichier configuration.yaml de HomeAssistant. 
+
+(petit tips si vous ne l'avez pas déjà, intégrer le plugin VisualCode Server sur HomeAssistant pour modifier rapidemment votre configuration)
 
 
