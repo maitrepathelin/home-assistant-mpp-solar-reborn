@@ -138,7 +138,7 @@ Il n'accepte les requêtes que depuis une IP. Pour un semblant de sécurité j'a
 
 [ChatGPT / Http listener powershell](ChatGPTdiscussion_http_listener_powershell.md) 
 
-Penser à intégrer ce script en tâche planifié démarrage de windows.
+Penser à intégrer ce script en tâche planifié démarrage de windows avec autorisation maximales.
 
 ## Etape de programmation HomeAssistant
 
