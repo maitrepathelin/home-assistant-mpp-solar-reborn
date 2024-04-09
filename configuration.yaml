@@ -1,0 +1,33 @@
+template:
+  - sensor:
+      - name: "Onduleur priorité de source TXT"
+        #unique_id: "onduleur_priorite_source_txt"
+        state: >
+          {% set value_map = {
+            0: "Utility first",
+            1: "Solar first",
+            2: "SBU first"
+          } %}
+          {% set sensor_value = states('sensor.onduleur_priorite_de_source') | int %}
+          {{ value_map.get(sensor_value, 'Unknown') }}
+
+      - name: "Onduleur priorité de charge TXT"
+        #unique_id: "onduleur_priorite_source_txt"
+        state: >
+          {% set value_map = {
+            0: "Utility first", 
+            1: "Solar first", 
+            2: "Solar + Utility", 
+            3: "Only solar charging permitted" 
+          } %}
+          {% set sensor_value = states('sensor.onduleur_priorite_de_charge') | int %}
+          {{ value_map.get(sensor_value, 'Unknown') }}
+
+      - name: "Onduleur status comm USB"
+        state: "{{ is_state('input_boolean.mon_status', 'on') }}"
+        icon: >
+          {% if is_state('input_boolean.mon_status', 'on') %}
+            mdi:check-circle-outline
+          {% else %}
+            mdi:alert-circle-outline
+          {% endif %}
