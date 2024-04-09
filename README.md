@@ -147,5 +147,8 @@ Penser à intégrer ce script en tâche planifié démarrage de windows.
 
 6. Ne pas oublier de reboot
 
-7. Intégrer dans Node-Red 
+7. Intégrer dans Node-Red le flux 1, ressemblant à ca :
+
+![image](https://github.com/maitrepathelin/home-assistant-mpp-solar-rethinked/assets/11854885/0999f61b-aceb-4ccd-98a0-11cbc33974ff)
+
 
