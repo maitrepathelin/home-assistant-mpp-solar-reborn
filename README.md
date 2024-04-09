@@ -9,7 +9,7 @@ Il n'est pas encore terminé mais est déjà en grande partie fonctionnel, voir 
  - Envoi des commandes de configuration/programmation de l'onduleur par HomeAssistant : 60%
  - Automatisation en fonction de la production solaire prévisionnel et les jours Tempo d'EDF : 60%
 
-![image](https://github.com/maitrepathelin/home-assistant-mpp-solar-rethinked/assets/11854885/bbb1ba7a-ee66-4062-bdf6-99e7035bb13c)
+![image](https://github.com/maitrepathelin/home-assistant-mpp-solar-reborn/assets/11854885/bbb1ba7a-ee66-4062-bdf6-99e7035bb13c)
 
 
 
@@ -40,7 +40,7 @@ Il n'est pas encore terminé mais est déjà en grande partie fonctionnel, voir 
 
 ## Architecture globale simplifiée
 
-![Diagramme1](https://github.com/maitrepathelin/home-assistant-mpp-solar-rethinked/assets/11854885/d8550786-2451-4fb6-9587-986ff11bbd11)
+![Diagramme1](https://github.com/maitrepathelin/home-assistant-mpp-solar-reborn/assets/11854885/d8550786-2451-4fb6-9587-986ff11bbd11)
 
 ### Accès à distance et machine hôte
 Ma machine hôte est un vieux portable mais avec un i7 3630QM et 16gb de ram, donc largement suffisant.
@@ -156,7 +156,7 @@ Penser à intégrer ce script en tâche planifié démarrage de windows.
 
 7. Intégrer dans Node-Red le flux 1, ressemblant à ca :
 
-![image](https://github.com/maitrepathelin/home-assistant-mpp-solar-rethinked/assets/11854885/0999f61b-aceb-4ccd-98a0-11cbc33974ff)
+![image](https://github.com/maitrepathelin/home-assistant-mpp-solar-reborn/assets/11854885/0999f61b-aceb-4ccd-98a0-11cbc33974ff)
 
 Le flux est disponible [ICI](flows.json) , importable normalement directement JSON sur Red-Node. 
 
