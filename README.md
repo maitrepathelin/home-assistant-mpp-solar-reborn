@@ -119,7 +119,9 @@ Là il faut que mpp-solar puisse attaquer le port ttyUSB0 sans droit sudo. Si l'
 
 9. Intégrer le daemon d'écoute HTTP
 
-Pour envoyer des commandes depuis home assistant vers mpp-solar j'utilise un petit daemon powershell que ChatGPT m'a concocté. Il réceptionne les httprequest de node-red et les execute 
+Pour envoyer des commandes depuis home assistant vers mpp-solar j'utilise un petit daemon powershell que ChatGPT m'a concocté. Il réceptionne les httprequest de node-red, les execute, et node-red recoit le retour de commande.
+
+
 
 10. 
 
