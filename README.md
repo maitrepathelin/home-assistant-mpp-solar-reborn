@@ -78,6 +78,6 @@ J'ai utilisé ChatGPT pour qu'il me construise un service systemd et qu'il se la
 Ce service scan à intervalle régulier /dev/ttyUSB0 et s'il doit alors il applique un chmod 777.
 
 Se baser sur cette discussion ChatGPT :
-[a relative link](other_file.md)
+[a relative link](ChatGPTdiscussion_creer_service.md)
 
 
