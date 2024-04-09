@@ -2,6 +2,7 @@
 
 ##### Voici mon projet complet pour piloter et gérer mon onduleur solaire sur Home Assistant. Ce projet peut vous intéressez si vous avez un onduleur avec le protocole PI30 (voir [ici pour le protocole](https://github.com/jblance/mpp-solar/tree/master/docs/protocols "ici pour le protocole")) ou équivalent.
 
+
 ------------
 
 
@@ -33,8 +34,14 @@
 
 ### Accès à distance et machine hôte
 Ma machine hôte est un vieux portable mais avec un i7 3630QM et 16gb de ram, donc largement suffisant.
+
+
 En revanche concernant l'accès à distance il faut obligatoirement passer par un VNC Server ou équivalent (teamviewer / anydesk), un programme qui **ne vérouille par la session utilisateur sur l'hôte** lorsqu'on se connecte à distance. 
+
+
 [Tight VNC Server](https://www.tightvnc.com/)
+
+
 Pourquoi pas de RDP : J'ai des scripts powershell et docker (pas utilisé ici mais pour d'autres projets) qui tournent sur la session et pas en tant que service. Donc j'évite de faire des déco reco en RDP. 
 
 ## Etape de programmation
@@ -62,8 +69,12 @@ Un problème compliqué à résoudre à été de donner accès au port usb à mp
 
 Pour cela il faut déjà activer **systemd** dans WSL, procédure décrite [ici](https://learn.microsoft.com/fr-fr/windows/wsl/systemd "ici")
 
-5.1 Créer un service dans Debian claquer un chmod 777 sur /dev/ttyUSB0
+6. Créer un service dans Debian executer un chmod 777 sur /dev/ttyUSB0
 
 (on rage pas le sur 777, j'ai pas d'objectif top sécurité, la machine n'a pas de ports entrants depuis internet et j'ai confiance en mon réseau local)
+
+J'ai utilisé ChatGPT pour qu'il me construise un service systemd et qu'il se lance au démarrage de la machine, cf étape 5 pour activer systemd WSL. 
+
+Ce service scan à intervalle régulier /dev/ttyUSB0 et s'il doit alors il applique un chmod 777
 
 
