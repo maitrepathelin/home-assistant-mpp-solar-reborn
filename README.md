@@ -44,7 +44,7 @@ En revanche concernant l'accès à distance il faut obligatoirement passer par u
 
 Pourquoi pas de RDP : J'ai des scripts powershell et docker (pas utilisé ici mais pour d'autres projets) qui tournent sur la session et pas en tant que service. Donc j'évite de faire des déco reco en RDP. 
 
-## Etape de programmation
+## Etape de programmation Windows / WSL
 1. Configurer Windows avec un autologon au démarrage. La plupart des scripts se lancent à l'ouverture de session, j'utilise le programme WITweaker de Arium.
 
 2. Installer WSL avec la distribution debian, penser à supprimer Ubuntu qui est toujours par défaut
@@ -121,8 +121,25 @@ Là il faut que mpp-solar puisse attaquer le port ttyUSB0 sans droit sudo. Si l'
 
 Pour envoyer des commandes depuis home assistant vers mpp-solar j'utilise un petit daemon powershell que ChatGPT m'a concocté. Il réceptionne les httprequest de node-red, les execute, et node-red recoit le retour de commande.
 
+Il n'accepte les requêtes que depuis une IP. Pour un semblant de sécurité j'autorise que l'IP de HomeAssistant du réseau privé hôte de VirtualBox (voir étapes suivantes pour HomeAssistant). Ca évite déjà de faire passer les requêtes en boucle sur le réseau LAN et ca protège peu. 
 
+[ChatGPT / Http listener powershell](ChatGPTdiscussion_http_listener_powershell.md) 
 
-10. 
+Penser à intégrer ce script en tâche planifié démarrage de windows.
 
+## Etape de programmation HomeAssistant
+
+1. Installer VirtualBox, pas besoin de décrire. Intégrer le script HAOS.bat à shell:startup de Windows pour démarrer automatiquement la VM. 
+
+2. Suivre la documentation HomeAssistant pour installer HAOS sur VirtualBox
+
+3. Créer deux cartes réseaux dans la VM : 1 en bridge sur le LAN, 1 en réseau privé hôte pour HTTP listener
+
+4. Démarrer et configurer de manière classique HomeAssistant
+
+5. Installer le plugin Node-Red et Node-red Companion (avec Home Assistant Community Store)
+
+6. Ne pas oublier de reboot
+
+7. 
 
