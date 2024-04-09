@@ -151,4 +151,26 @@ Penser à intégrer ce script en tâche planifié démarrage de windows.
 
 ![image](https://github.com/maitrepathelin/home-assistant-mpp-solar-rethinked/assets/11854885/0999f61b-aceb-4ccd-98a0-11cbc33974ff)
 
+Le flux est disponible [ICI](flows.json) , importable normalement directement JSON sur Red-Node. 
+
+En revanche en analysant le JSON sur GitHub j'ai des doutes car certaines fonctions sont vraiment complexes (la ligne func: s'affiche en blanc, comme si pas de formattage JSON), je préfère donc les rajouter en plus sur GitHub au besoin, si l'import du fichier flows.json plante alors remplacer par quelque chose de simple style "return msg.payload;" la ligne func: des fonctions ci dessous dans le fichier JSON, importer le flux et recopier le contenu des fonctions dans les noeuds correspondants :
+  - [FX traitement erreur V2](Flow_FX_traitement_reponse_V2.js)
+  - [FX traitement réponse QPIGS](Flow_fx_traitement_reponse_QPIGS.js)
+  - [Traitement erreur](Flow_traitement_erreur.js)
+
+(j'ai nommé les fichiers des fonctions en .js juste pour avoir la colorisation sur github, mais il faut bien copier leurs contenus brut dans le neouds de fonction correspondant node-red !)
+
+8. Explication du flow Node-Red
+
+C'est ce flow qui fait 100% du travail :
+ - Il créer les entités (boutons, capteur, capteurs binaires) dans HomeAssistant automatiquement grâce à Node-Red Companion
+ - Il lance une boucle qui va interroger toutes les 3 secondes les valeurs de production de l'onduleur, commande QPIGS (mpp-solar) en passant par HttpRequest qui envoi la requête au script HttpListener powershell de l'hôte
+ - Il lance une boucle qui va interroger toutes les 10 secondes les valeurs de configuration de l'onduleur, commande QPIRI (mpp-solar) en passant par HttpRequest qui envoi la requête au script HttpListener powershell de l'hôte
+ - Il intercepte les appuis de boutons (automatisation de l'appui par HomeAssistant, à vous de jouer), met en pause les commandes QPIGS et QPIRI, envoi la commande, attends 2 secondes, et relance les boucles
+ - Il parse le retour des commandes QPIGS et QPIRI (cf fonctions magiques ChatGPT ci dessus) et renvoi les valeurs de l'array dans des capteurs Home Assistant
+ - Il vérifie le retour des commandes, si elles ne sont pas conformes alors ca veut dire que soit l'onduleur est débranché, soit le HttpListener pas à l'écoute, et donc déclenche des capteurs binaires pour signaler l'erreur à HomeAssistant
+
+**Ce flow est fonctionnel, et permet de récupérer quasi en direct l'ensemble des valeurs de l'onduleur de manière fiable, avec détection des erreurs**
+**J'ai commencé à intégrer des commandes, notamment pour définir la puissance de rechargement sur EDF (2 ou 10 A) et le mode (sortie solaire->batterie->EDF / sortie EDF). De par la conception du flow il est très simple de rajouter des commandes et facilement compréhensible, n'hésitez pas à rajouter vos commandes !**
+
 
