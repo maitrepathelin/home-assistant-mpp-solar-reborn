@@ -75,6 +75,9 @@ Pour cela il faut déjà activer **systemd** dans WSL, procédure décrite [ici]
 
 J'ai utilisé ChatGPT pour qu'il me construise un service systemd et qu'il se lance au démarrage de la machine, cf étape 5 pour activer systemd WSL. 
 
-Ce service scan à intervalle régulier /dev/ttyUSB0 et s'il doit alors il applique un chmod 777
+Ce service scan à intervalle régulier /dev/ttyUSB0 et s'il doit alors il applique un chmod 777.
+
+Se baser sur cette discussion ChatGPT :
+[a relative link](other_file.md)
 
 
