@@ -181,6 +181,10 @@ Les fonctions de traitement des réponses, cf ci dessus sont plutôt complexes, 
 
 **Ce flow est fonctionnel, et permet de récupérer quasi en direct l'ensemble des valeurs de l'onduleur de manière fiable, avec détection des erreurs**
 
+**Le capteur binaire "Erreur Comm USB" peut prendre 30 secondes à 1 minute pour se déclencher, il faut attendre que la fonction HttpRequest émette un message "Format de réponse inatendue"**
+
+**Le défaut de commande USB lui est instantanné**
+
 
 **J'ai commencé à intégrer des commandes, notamment pour définir la puissance de rechargement sur EDF (2 ou 10 A) et le mode (sortie solaire->batterie->EDF / sortie EDF). De par la conception du flow il est très simple de rajouter des commandes et facilement compréhensible, n'hésitez pas à rajouter vos commandes ! Sinon je le ferais au fur à et à mesure que j'en ai besoin.**
 
