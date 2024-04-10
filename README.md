@@ -70,7 +70,7 @@ Pourquoi pas de RDP : J'ai des scripts powershell et docker (pas utilisé ici ma
 à éxécuter qu'une seule fois pour mettre le port en partage, survit au reboot
 
 `usbipd attach --wsl --busid 4-2` 
-à exécuter à chaque déco reco du port usb. **J'ai déjà automatisé à l'ouverture de session avec le script USB_WSL.ps1**, penser à adapter le délai d'attente si WSL est long à se lancer
+à exécuter à chaque déco reco du port usb. **J'ai déjà automatisé à l'ouverture de session avec le script USB_IPD.ps1**, penser à adapter le délai d'attente si WSL est long à se lancer
 *todo : rajouter l'éxécution régulière du script si le port USB se deco à postériori*
 
 Aller voir ensuite dans la console Debian si le port USB est bien présent avec la commande `ls /dev` , on doit avoir normalement **ttyUSB0** , c'est notre onduleur. 
