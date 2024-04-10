@@ -11,4 +11,4 @@ start-sleep -s 5
 usbipd attach --wsl --busid 4-2
 start-sleep -s 5
 
-Je répète ici plusieurs fois la tâche, car pour une raison obscure ca échoue souvent la première fois, mais réussi après. Ca mange pas de pain de bourrer le prompt.
+#Je répète ici plusieurs fois la tâche, car pour une raison obscure ca échoue souvent la première fois, mais réussi après. Ca mange pas de pain de bourrer le prompt.
