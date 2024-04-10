@@ -7,7 +7,7 @@ Il n'est pas encore terminé mais est déjà en grande partie fonctionnel, voir 
  - Réception et traitement des informations de la programmation de l'onduleur : 100%
  - Affichage des valeurs dans HomeAssistant : 100%
  - Envoi des commandes de configuration/programmation de l'onduleur par HomeAssistant : 60%
- - Automatisation en fonction de la production solaire prévisionnel et les jours Tempo d'EDF : 60%
+ - Automatisation en fonction de la production solaire prévisionnel et les jours Tempo d'EDF : 100%
 
 ![image](https://github.com/maitrepathelin/home-assistant-mpp-solar-reborn/assets/11854885/bbb1ba7a-ee66-4062-bdf6-99e7035bb13c)
 
@@ -167,9 +167,9 @@ En revanche en analysant le JSON sur GitHub j'ai des doutes car certaines foncti
 
 (j'ai nommé les fichiers des fonctions en .js juste pour avoir la colorisation sur github, mais il faut bien copier leurs contenus brut dans le neouds de fonction correspondant node-red !)
 
-8. Explication du flow Node-Red
+8. Explication du flow Node-Red Flow1
 
-C'est ce flow qui fait 99,99% du travail :
+C'est ce flow qui fait 95% du travail :
  - Il créer les entités (boutons, capteur, capteurs binaires) dans HomeAssistant automatiquement grâce à Node-Red Companion
  - Il lance une boucle qui va interroger toutes les 3 secondes les valeurs de production de l'onduleur, commande QPIGS (mpp-solar) en passant par HttpRequest qui envoi la requête au script HttpListener powershell de l'hôte
  - Il lance une boucle qui va interroger toutes les 10 secondes les valeurs de configuration de l'onduleur, commande QPIRI (mpp-solar) en passant par HttpRequest qui envoi la requête au script HttpListener powershell de l'hôte
@@ -188,7 +188,13 @@ Les fonctions de traitement des réponses, cf ci dessus sont plutôt complexes, 
 
 **J'ai commencé à intégrer des commandes, notamment pour définir la puissance de rechargement sur EDF (2 ou 10 A) et le mode (sortie solaire->batterie->EDF / sortie EDF). De par la conception du flow il est très simple de rajouter des commandes et facilement compréhensible, n'hésitez pas à rajouter vos commandes ! Sinon je le ferais au fur à et à mesure que j'en ai besoin.**
 
-9. Les 00,01% sur HomeAssistant
+9. Récupération infos EDF Tempo / Node-red
+
+ Géré par le flow 2, dispo [ICI](flow_tempo.json), simple, il va chercher sur https://www.api-couleur-tempo.fr/ les codes des jours pour aujourd'hui et demain et envoi l'info dans des sensors. Il le fait toutes les deux heures. 
+ Deux templates dans la partie configuration.yaml de home assistant transforment les codes jours en nom (bleu, blanc, rouge)
+ Et c'est tout. Simple et efficace.  
+
+10. Partie Home assistant
 
 Il s'agit simplement de transformer des valeurs numériques en texte pour que ce soit plus visuel, notamment sur l'état du mode de sortie (SBU/EDF), le mode de rechargement, et une erreur de communication USB. 
 
