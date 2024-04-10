@@ -1,0 +1,268 @@
+[
+    {
+        "id": "642ba4ed83366f79",
+        "type": "tab",
+        "label": "Flux 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "99c01de80ec3ba21",
+        "type": "inject",
+        "z": "642ba4ed83366f79",
+        "name": "Appelle regulier API TEMPO",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "7200",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "2",
+        "topic": "",
+        "x": 170,
+        "y": 240,
+        "wires": [
+            [
+                "e5c94cfc51522fa5"
+            ]
+        ]
+    },
+    {
+        "id": "e5c94cfc51522fa5",
+        "type": "http request",
+        "z": "642ba4ed83366f79",
+        "name": "Tempo Today",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://www.api-couleur-tempo.fr/api/jourTempo/today",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 430,
+        "y": 240,
+        "wires": [
+            [
+                "c17804c759e45933",
+                "1d1660b8ac083c85",
+                "692fdc6bcc517929"
+            ]
+        ]
+    },
+    {
+        "id": "c17804c759e45933",
+        "type": "debug",
+        "z": "642ba4ed83366f79",
+        "name": "debug Tempo today",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 630,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "1d1660b8ac083c85",
+        "type": "delay",
+        "z": "642ba4ed83366f79",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 420,
+        "y": 320,
+        "wires": [
+            [
+                "37350f6db743faaf"
+            ]
+        ]
+    },
+    {
+        "id": "37350f6db743faaf",
+        "type": "http request",
+        "z": "642ba4ed83366f79",
+        "name": "Tempo Tomorrow",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://www.api-couleur-tempo.fr/api/jourTempo/tomorrow",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 430,
+        "y": 400,
+        "wires": [
+            [
+                "8b64ceda8c2d7fa3",
+                "c973c0a7993bd8b9"
+            ]
+        ]
+    },
+    {
+        "id": "8b64ceda8c2d7fa3",
+        "type": "debug",
+        "z": "642ba4ed83366f79",
+        "name": "debug tempo Tomorrow",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 690,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "c973c0a7993bd8b9",
+        "type": "ha-sensor",
+        "z": "642ba4ed83366f79",
+        "name": "EDF - Tempo demain",
+        "entityConfig": "7c1859efb46fe761",
+        "version": 0,
+        "state": "payload.codeJour",
+        "stateType": "msg",
+        "attributes": [],
+        "inputOverride": "allow",
+        "outputProperties": [],
+        "x": 680,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "692fdc6bcc517929",
+        "type": "ha-sensor",
+        "z": "642ba4ed83366f79",
+        "name": "EDF - Code jour aujourd'hui",
+        "entityConfig": "fce0bb67c31573e6",
+        "version": 0,
+        "state": "payload.codeJour",
+        "stateType": "msg",
+        "attributes": [],
+        "inputOverride": "allow",
+        "outputProperties": [],
+        "x": 700,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7c1859efb46fe761",
+        "type": "ha-entity-config",
+        "server": "44866a3d.9801e4",
+        "deviceConfig": "",
+        "name": "EDF - Code jour demain",
+        "version": "6",
+        "entityType": "sensor",
+        "haConfig": [
+            {
+                "property": "name",
+                "value": "EDF - Code jour demain"
+            },
+            {
+                "property": "icon",
+                "value": "mdi:palette"
+            },
+            {
+                "property": "entity_picture",
+                "value": ""
+            },
+            {
+                "property": "entity_category",
+                "value": ""
+            },
+            {
+                "property": "device_class",
+                "value": ""
+            },
+            {
+                "property": "unit_of_measurement",
+                "value": ""
+            },
+            {
+                "property": "state_class",
+                "value": ""
+            }
+        ],
+        "resend": true,
+        "debugEnabled": false
+    },
+    {
+        "id": "fce0bb67c31573e6",
+        "type": "ha-entity-config",
+        "server": "44866a3d.9801e4",
+        "deviceConfig": "",
+        "name": "EDF - Code jour aujourd'hui",
+        "version": "6",
+        "entityType": "sensor",
+        "haConfig": [
+            {
+                "property": "name",
+                "value": "EDF - Code jour aujourd'hui"
+            },
+            {
+                "property": "icon",
+                "value": "mdi:palette"
+            },
+            {
+                "property": "entity_picture",
+                "value": ""
+            },
+            {
+                "property": "entity_category",
+                "value": ""
+            },
+            {
+                "property": "device_class",
+                "value": ""
+            },
+            {
+                "property": "unit_of_measurement",
+                "value": ""
+            },
+            {
+                "property": "state_class",
+                "value": ""
+            }
+        ],
+        "resend": true,
+        "debugEnabled": false
+    },
+    {
+        "id": "44866a3d.9801e4",
+        "type": "server",
+        "name": "Home Assistant",
+        "addon": true
+    }
+]
