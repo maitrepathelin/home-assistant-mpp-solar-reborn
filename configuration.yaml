@@ -31,3 +31,27 @@ template:
           {% else %}
             mdi:alert-circle-outline
           {% endif %}
+
+      - name: "EDF - Type de jour tempo aujourd'hui"
+        #unique_id: "onduleur_priorite_source_txt"
+        state: >
+          {% set value_map = {
+            0: "Pas communiqué", 
+            1: "Bleu", 
+            2: "Blanc", 
+            3: "Rouge" 
+          } %}
+          {% set sensor_value = states('sensor.edf_code_jour_aujourd_hui') | int %}
+          {{ value_map.get(sensor_value, 'Unknown') }}
+
+      - name: "EDF - Type de jour tempo demain"
+        #unique_id: "onduleur_priorite_source_txt"
+        state: >
+          {% set value_map = {
+            0: "Pas communiqué", 
+            1: "Bleu", 
+            2: "Blanc", 
+            3: "Rouge" 
+          } %}
+          {% set sensor_value = states('sensor.edf_tempo_demain') | int %}
+          {{ value_map.get(sensor_value, 'Unknown') }}
