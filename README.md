@@ -203,4 +203,15 @@ Intégrer ces lignes dans votre fichier configuration.yaml de HomeAssistant.
 
 (petit tips si vous ne l'avez pas déjà, intégrer le plugin VisualCode Server sur HomeAssistant pour modifier rapidemment votre configuration)
 
+###Rajout 15/04/23
+ - Ajout du script decorecoUSB.ps1
+
+   
+Le port /dev/ttyUSB0 se plante régulièrement dans WSL. mpp-solar le détecte toujours et envoi la commande mais le retour des commandes QPIRI et QPIGS sont vides. Le script créé sert donc juste à déconnecter le port avec usbipd, attendre 10 secondes et le reconnecter. Cela suffit apparament à retrouver une communication.
+
+
+Il faut l'intégréer en tâche planifiée à l'ouverture de session avec les paramètres suivants : 
+ - Répéter la tâche toutes les heures, indéfiniment
+ - Si une instance est déjà en exécution alors la terminer
+ - Arrêter la tache si elle dure plus de 30 minutes
 
