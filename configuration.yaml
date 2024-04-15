@@ -61,8 +61,7 @@ template:
         state_class: total
         unit_of_measurement: "W"  # Assurez-vous que l'unité est correcte selon vos besoins
         state: >
-          {% if is_state('binary_sensor.onduleur_recharge_batterie_solaire', 'off') and
-                states('sensor.onduleur_batterie_puissance_de_decharge') | float == 0 %}
+          {% if is_state('binary_sensor.onduleur_recharge_batterie_solaire', 'off')  %}
             {{ states('sensor.onduleur_active_power') }}
           {% else %}
             0
