@@ -55,3 +55,13 @@ template:
           } %}
           {% set sensor_value = states('sensor.edf_tempo_demain') | int %}
           {{ value_map.get(sensor_value, 'Unknown') }}
+
+      - name: "Onduleur - Puissance tirée sur EDF"
+        unit_of_measurement: "W"  # Assurez-vous que l'unité est correcte selon vos besoins
+        state: >
+          {% if is_state('binary_sensor.onduleur_recharge_batterie_solaire', 'off') and
+                states('sensor.onduleur_batterie_puissance_de_decharge') | float == 0 %}
+            {{ states('sensor.onduleur_active_power') }}
+          {% else %}
+            0
+          {% endif %}
