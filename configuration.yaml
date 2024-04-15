@@ -57,6 +57,8 @@ template:
           {{ value_map.get(sensor_value, 'Unknown') }}
 
       - name: "Onduleur - Puissance tirée sur EDF"
+        device_class: energy
+        state_class: total
         unit_of_measurement: "W"  # Assurez-vous que l'unité est correcte selon vos besoins
         state: >
           {% if is_state('binary_sensor.onduleur_recharge_batterie_solaire', 'off') and
