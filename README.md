@@ -215,3 +215,10 @@ Il faut l'intégréer en tâche planifiée à l'ouverture de session avec les pa
  - Si une instance est déjà en exécution alors la terminer
  - Arrêter la tache si elle dure plus de 30 minutes
 
+
+***Rajout 23/04/23
+ - Ajout de la fonction QMOD dans le flow 1 de Node-red.
+
+Permet de savoir de manière fiable si l'onduleur est sur EDF ou en mode Batterie, renvoi un capteur binaire. Ce capteur est utilisé dans le template pour extraire la puissance instantannée sur EDF, utilisable ensuite dans l'energy dashboard
+
+ - Modifications diverses des capteurs pour tester l'energy dashboard, pas encore au point
