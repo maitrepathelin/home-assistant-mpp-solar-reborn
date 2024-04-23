@@ -86,7 +86,7 @@
         "type": "debug",
         "z": "df063c9c3211a70d",
         "name": "debug 1",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -229,7 +229,8 @@
             [
                 "c6e7427e32e96867",
                 "6a47ee400c192e43",
-                "7699680657a9f81b"
+                "7699680657a9f81b",
+                "296a46ecca53279e"
             ]
         ]
     },
@@ -256,7 +257,7 @@
         "type": "debug",
         "z": "df063c9c3211a70d",
         "name": "debug Résultat array QPIRI",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": true,
         "tostatus": false,
@@ -308,7 +309,8 @@
         "wires": [
             [
                 "c555802a051734af",
-                "2e711f93dc682b24"
+                "2e711f93dc682b24",
+                "43891433dd92b41d"
             ]
         ]
     },
@@ -640,7 +642,7 @@
         "type": "debug",
         "z": "df063c9c3211a70d",
         "name": "debug Erreur comm USB",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -830,7 +832,8 @@
         "y": 840,
         "wires": [
             [
-                "794915052cadf5c6"
+                "794915052cadf5c6",
+                "43891433dd92b41d"
             ]
         ]
     },
@@ -919,7 +922,8 @@
         "y": 840,
         "wires": [
             [
-                "7fd5d23084b32067"
+                "7fd5d23084b32067",
+                "1cd6ef613fb78f1d"
             ]
         ]
     },
@@ -927,7 +931,7 @@
         "id": "7fd5d23084b32067",
         "type": "function",
         "z": "df063c9c3211a70d",
-        "name": "Fx traitement réponse v2",
+        "name": "Fx traitement réponse QPIGS",
         "func": "// Fonction pour extraire les valeurs de la chaîne de réponse et traiter un bloc de valeurs booléennes\nfunction extractValues(response) {\n    // Trouve le début de la chaîne de valeurs numériques\n    const start = response.indexOf('(') + 1;\n    // Détermine la fin de la chaîne de valeurs numériques\n    let end;\n    if (response.indexOf(']') > -1) {\n        end = response.indexOf(']') - 1;\n    } else if (response.indexOf('\\\\') > -1) {\n        end = response.indexOf('\\\\') - 1;\n    } else {\n        return {error: 'Format de réponse inattendu.'};\n    }\n    // Extrait la sous-chaîne contenant les valeurs\n    const valuesString = response.substring(start, end);\n    // Initialisation d'un tableau pour les valeurs séparées\n    let values = [];\n    \n    // Détecter et traiter le bloc de valeurs booléennes\n    const boolBlockStart = valuesString.search(/\\d{8}/); // Recherche la première occurrence d'un bloc de 8 chiffres\n    if (boolBlockStart !== -1) {\n        // Extraire le bloc de valeurs booléennes\n        const boolBlock = valuesString.substr(boolBlockStart, 8);\n        // Convertir chaque chiffre du bloc en booléen et l'insérer dans l'array 'values'\n        boolBlock.split('').forEach(bit => values.push(bit === '1' ? true : false));\n        // Remplacer le bloc dans la chaîne de valeurs par des espaces pour éviter de le retraiter\n        const updatedValuesString = valuesString.slice(0, boolBlockStart) + '        ' + valuesString.slice(boolBlockStart + 8);\n        // Séparer les autres valeurs en utilisant l'espace comme séparateur\n        values = [...values, ...updatedValuesString.split(' ').filter(v => v).map(value => isNaN(parseFloat(value)) ? value : parseFloat(value))];\n    } else {\n        // Si aucun bloc de valeurs booléennes n'est trouvé, traiter la chaîne comme avant\n        values = valuesString.split(' ').map(value => isNaN(parseFloat(value)) ? value : parseFloat(value));\n    }\n\n    return {payload: values};\n}\n\n// Application de la fonction d'extraction au payload reçu\nconst result = extractValues(msg.payload);\n\n// Vérifie si le résultat contient une erreur ou non\nif (result.error) {\n    return {payload: result.error, topic: \"error\"};\n} else {\n    msg.payload = result.payload;\n    return msg; // Renvoie le message avec le payload modifié\n}\n",
         "outputs": 1,
         "timeout": 0,
@@ -935,7 +939,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1250,
+        "x": 1260,
         "y": 840,
         "wires": [
             [
@@ -1022,7 +1026,7 @@
         "type": "debug",
         "z": "df063c9c3211a70d",
         "name": "debug Résultat array QPIGS",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": true,
         "tostatus": false,
@@ -1412,6 +1416,336 @@
             [
                 "8f968ca2db50e503"
             ]
+        ]
+    },
+    {
+        "id": "1cd6ef613fb78f1d",
+        "type": "debug",
+        "z": "df063c9c3211a70d",
+        "name": "debug 2 requete QPIRI",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "737d21150f6711bf",
+        "type": "function",
+        "z": "df063c9c3211a70d",
+        "name": "PCP03 (Solar Only Charge)",
+        "func": "msg.payload = \"wsl /home/maitrepathelin/venv/bin/mpp-solar -p /dev/ttyUSB0 -P PI30 -c PCP03\"\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 100,
+        "wires": [
+            [
+                "f9c1bdab10d3c20e"
+            ]
+        ]
+    },
+    {
+        "id": "a0a26b2a4e9c6959",
+        "type": "function",
+        "z": "df063c9c3211a70d",
+        "name": "PCP02 (Utility and Solar Charge)",
+        "func": "msg.payload = \"wsl /home/maitrepathelin/venv/bin/mpp-solar -p /dev/ttyUSB0 -P PI30 -c PCP02\"\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 60,
+        "wires": [
+            [
+                "f9c1bdab10d3c20e"
+            ]
+        ]
+    },
+    {
+        "id": "318ca86ddb919213",
+        "type": "ha-button",
+        "z": "df063c9c3211a70d",
+        "name": "Onduleur charge solar only",
+        "version": 0,
+        "debugenabled": false,
+        "outputs": 1,
+        "entityConfig": "5bcaaad1d34ae208",
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entityState"
+            },
+            {
+                "property": "topic",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "triggerId"
+            },
+            {
+                "property": "data",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entity"
+            }
+        ],
+        "x": 140,
+        "y": 60,
+        "wires": [
+            [
+                "737d21150f6711bf"
+            ]
+        ]
+    },
+    {
+        "id": "37a0da1de52d465e",
+        "type": "ha-button",
+        "z": "df063c9c3211a70d",
+        "name": "Onduleur charge EDF et solaire",
+        "version": 0,
+        "debugenabled": false,
+        "outputs": 1,
+        "entityConfig": "bfbd06c76643c281",
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entityState"
+            },
+            {
+                "property": "topic",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "triggerId"
+            },
+            {
+                "property": "data",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entity"
+            }
+        ],
+        "x": 130,
+        "y": 20,
+        "wires": [
+            [
+                "a0a26b2a4e9c6959"
+            ]
+        ]
+    },
+    {
+        "id": "f6e5fcb01965bd5e",
+        "type": "trigger",
+        "z": "df063c9c3211a70d",
+        "name": "",
+        "op1": "",
+        "op2": "0",
+        "op1type": "pay",
+        "op2type": "str",
+        "duration": "-20",
+        "extend": false,
+        "overrideDelay": true,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 380,
+        "y": 1040,
+        "wires": [
+            [
+                "2a0afded03d5df2d"
+            ]
+        ]
+    },
+    {
+        "id": "2a0afded03d5df2d",
+        "type": "function",
+        "z": "df063c9c3211a70d",
+        "name": "function 1",
+        "func": "msg.payload = \"wsl /home/maitrepathelin/venv/bin/mpp-solar -p /dev/ttyUSB0 -P PI30 -c QMOD\"\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 1040,
+        "wires": [
+            [
+                "474b99980849ccfa"
+            ]
+        ]
+    },
+    {
+        "id": "474b99980849ccfa",
+        "type": "http request",
+        "z": "df063c9c3211a70d",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://192.168.56.1:8020",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 810,
+        "y": 1040,
+        "wires": [
+            [
+                "20ebaaaf32dcb3e9"
+            ]
+        ]
+    },
+    {
+        "id": "75b991eac1ded8bf",
+        "type": "debug",
+        "z": "df063c9c3211a70d",
+        "name": "debug QMOD",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 1100,
+        "wires": []
+    },
+    {
+        "id": "43891433dd92b41d",
+        "type": "function",
+        "z": "df063c9c3211a70d",
+        "name": "msg reset",
+        "func": "// Crée un message avec la propriété reset\nreturn { reset: true };\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 960,
+        "wires": [
+            [
+                "f6e5fcb01965bd5e"
+            ]
+        ]
+    },
+    {
+        "id": "033ea7faf6c0db6b",
+        "type": "inject",
+        "z": "df063c9c3211a70d",
+        "name": "Déclenceur manuel",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "20",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 1020,
+        "wires": [
+            [
+                "f6e5fcb01965bd5e"
+            ]
+        ]
+    },
+    {
+        "id": "296a46ecca53279e",
+        "type": "delay",
+        "z": "df063c9c3211a70d",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "15",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1010,
+        "y": 720,
+        "wires": [
+            [
+                "f6e5fcb01965bd5e"
+            ]
+        ]
+    },
+    {
+        "id": "20ebaaaf32dcb3e9",
+        "type": "function",
+        "z": "df063c9c3211a70d",
+        "name": "QMOD",
+        "func": "// Fonction pour vérifier le mode device dans la réponse HTTP\nfunction checkDeviceMode(msg) {\n    var responseText = msg.payload; // Assurez-vous que 'msg.payload' contient la réponse HTTP en texte\n\n    // Chercher le mot 'Battery' dans la réponse\n    if (responseText.includes(\"Battery\")) {\n        msg.payload = 0; // Retourne 1 si 'Battery' est trouvé\n    } else if (responseText.includes(\"Line\")) {\n        msg.payload = 1; // Retourne 0 si 'Line' est trouvé\n    } else {\n        msg.payload = -1; // Retourne -1 si aucun des termes n'est trouvé\n    }\n\n    return msg; // Renvoie le message avec la nouvelle charge utile\n}\n\n// Exemple d'appel de la fonction\nvar message = {\n    payload: \"Command: QMOD - Mode inquiry -------------------------------------------------------------------------------- Parameter Value Unit device_mode Battery --------------------------------------------------------------------------------\"\n};\n\nreturn checkDeviceMode(message); // Utilisez cette ligne dans le noeud \"function\" de Node-RED\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 970,
+        "y": 1040,
+        "wires": [
+            [
+                "98961d6899ad8ded",
+                "75b991eac1ded8bf"
+            ]
+        ]
+    },
+    {
+        "id": "98961d6899ad8ded",
+        "type": "ha-binary-sensor",
+        "z": "df063c9c3211a70d",
+        "name": "Onduleur est sur EDF",
+        "entityConfig": "97b7be2d124d106e",
+        "version": 0,
+        "state": "payload",
+        "stateType": "msg",
+        "attributes": [],
+        "inputOverride": "allow",
+        "outputProperties": [],
+        "x": 1160,
+        "y": 1040,
+        "wires": [
+            []
         ]
     },
     {
@@ -2213,15 +2547,15 @@
             },
             {
                 "property": "device_class",
-                "value": ""
+                "value": "current"
             },
             {
                 "property": "unit_of_measurement",
-                "value": ""
+                "value": "A"
             },
             {
                 "property": "state_class",
-                "value": ""
+                "value": "measurement"
             }
         ],
         "resend": false,
@@ -2431,6 +2765,105 @@
             }
         ],
         "resend": false,
+        "debugEnabled": false
+    },
+    {
+        "id": "5bcaaad1d34ae208",
+        "type": "ha-entity-config",
+        "server": "44866a3d.9801e4",
+        "deviceConfig": "",
+        "name": "Onduleur Solar Charge only",
+        "version": "6",
+        "entityType": "button",
+        "haConfig": [
+            {
+                "property": "name",
+                "value": "Onduleur Solar Charge only"
+            },
+            {
+                "property": "icon",
+                "value": ""
+            },
+            {
+                "property": "entity_picture",
+                "value": ""
+            },
+            {
+                "property": "entity_category",
+                "value": ""
+            },
+            {
+                "property": "device_class",
+                "value": ""
+            }
+        ],
+        "resend": false,
+        "debugEnabled": false
+    },
+    {
+        "id": "bfbd06c76643c281",
+        "type": "ha-entity-config",
+        "server": "44866a3d.9801e4",
+        "deviceConfig": "",
+        "name": "Onduleur charge EDF et solaire",
+        "version": "6",
+        "entityType": "button",
+        "haConfig": [
+            {
+                "property": "name",
+                "value": "Onduleur charge EDF et solaire"
+            },
+            {
+                "property": "icon",
+                "value": ""
+            },
+            {
+                "property": "entity_picture",
+                "value": ""
+            },
+            {
+                "property": "entity_category",
+                "value": ""
+            },
+            {
+                "property": "device_class",
+                "value": ""
+            }
+        ],
+        "resend": false,
+        "debugEnabled": false
+    },
+    {
+        "id": "97b7be2d124d106e",
+        "type": "ha-entity-config",
+        "server": "44866a3d.9801e4",
+        "deviceConfig": "",
+        "name": "Onduleur est sur EDF",
+        "version": "6",
+        "entityType": "binary_sensor",
+        "haConfig": [
+            {
+                "property": "name",
+                "value": "Onduleur est sur EDF"
+            },
+            {
+                "property": "icon",
+                "value": ""
+            },
+            {
+                "property": "entity_picture",
+                "value": ""
+            },
+            {
+                "property": "entity_category",
+                "value": ""
+            },
+            {
+                "property": "device_class",
+                "value": ""
+            }
+        ],
+        "resend": true,
         "debugEnabled": false
     },
     {
