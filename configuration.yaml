@@ -1,3 +1,20 @@
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+rest_command:
+  augmentation_chargement_edf:
+    url: http://192.168.56.1:8020
+    payload: "wsl /home/maitrepathelin/venv/bin/mpp-solar -p /dev/ttyUSB0 -P PI30 -c MUCHGC010"
+    method: POST
+
 template:
   - sensor:
       - name: "Onduleur priorité de source TXT"
@@ -57,12 +74,203 @@ template:
           {{ value_map.get(sensor_value, 'Unknown') }}
 
       - name: "Onduleur - Puissance tirée sur EDF"
-        device_class: energy
-        state_class: total
-        unit_of_measurement: "W"  # Assurez-vous que l'unité est correcte selon vos besoins
+        device_class: power
+        state_class: measurement
+        unit_of_measurement: "W" # Assurez-vous que l'unité est correcte selon vos besoins
         state: >
-          {% if is_state('binary_sensor.onduleur_recharge_batterie_solaire', 'off')  %}
-            {{ states('sensor.onduleur_active_power') }}
+          {% if is_state('binary_sensor.onduleur_mode_de_fonctionnement', 'on') %}
+          {{ states('sensor.onduleur_active_power') }}
           {% else %}
             0
           {% endif %}
+
+      - name: "Capacité batterie Wh"
+        unit_of_measurement: "W"
+        state: "{{ (51.2 * 120 * (states('sensor.onduleur_capacite_batterie') | float) * 0.01) | round(2) }}"
+        device_class: energy
+        state_class: measurement
+
+      - name: "Puissance instantanée de décharge de la batterie"
+        unit_of_measurement: "W"
+        state_class: measurement
+        device_class: power
+        state: >
+          {% set tension = states('sensor.onduleur_voltage_batterie') | float %}
+          {% set courant = states('sensor.onduleur_batterie_puissance_de_decharge') | float %}
+          {{ tension * courant }}
+
+      - name: "Puissance instantanée de charge de la batterie"
+        unit_of_measurement: "W"
+        state_class: measurement
+        device_class: power
+        state: >
+          {% set tension = states('sensor.onduleur_voltage_batterie') | float %}
+          {% set courant = states('sensor.onduleur_batterie_puissance_de_charge') | float %}
+          {{ tension * courant }}
+
+      - name: "V2 Total Energie Tirée EDF"
+        unique_id: "v2_total_tire_edf"
+        unit_of_measurement: "kWh"
+        state_class: total
+        device_class: energy
+        state: >
+          {{ states('sensor.onduleur_puissance_tiree_sur_edf') | float | multiply(0.001) | round(2) }}
+        attributes:
+          last_reset: "1970-01-01T00:00:00+00:00"
+
+      - name: "V2 Total Energie PV"
+        unique_id: "v2_total_energie_pv"
+        unit_of_measurement: "kWh"
+        state_class: total
+        device_class: energy
+        state: >
+          {{ states('sensor.onduleur_pv_puissance') | float | multiply(0.001) | round(2) }}
+        attributes:
+          last_reset: "1970-01-01T00:00:00+00:00"
+
+      - name: "V2 Total Energie Charge batterie"
+        unique_id: "v2_total_charge_batterie"
+        unit_of_measurement: "kWh"
+        state_class: total
+        device_class: energy
+        state: >
+          {{ states('sensor.puissance_instantanee_de_charge_de_la_batterie') | float | multiply(0.001) | round(2) }}
+        attributes:
+          last_reset: "1970-01-01T00:00:00+00:00"
+
+      - name: "V2 Total Energie Decharge batterie"
+        unique_id: "v2_total_decharge_batterie"
+        unit_of_measurement: "kWh"
+        state_class: total
+        device_class: energy
+        state: >
+          {{ states('sensor.puissance_instantanee_de_decharge_de_la_batterie') | float | multiply(0.001) | round(2) }}
+        attributes:
+          last_reset: "1970-01-01T00:00:00+00:00"
+# scrape:
+#   # Example configuration.yaml entry
+#   - resource: "http://192.168.1.38:8777/?GetLiveData&PlainText&Template02&APIKey=hypson1993"
+#     scan_interval: 2
+#     timeout: 30
+#     sensor:
+#       - name: "Onduleur - Charge totale"
+#         select: "body"
+#         value_template: "{{ value.replace('W', '') | replace(',', '.') }}"
+#         unit_of_measurement: "Wh"
+#         device_class: energy
+#         state_class: total
+
+#   - resource: "http://192.168.1.38:8777/?GetLiveData&PlainText&Template03&APIKey=hypson1993"
+#     scan_interval: 2
+#     timeout: 30
+#     sensor:
+#       - name: "Onduleur - Fourniture EDF"
+#         select: "body"
+#         value_template: "{{ value.replace('W', '') | replace(',', '.') }}"
+#         unit_of_measurement: "Wh"
+#         device_class: energy
+#         state_class: total
+
+#   - resource: "http://192.168.1.38:8777/?GetLiveData&PlainText&Template04&APIKey=hypson1993"
+#     scan_interval: 2
+#     timeout: 30
+#     sensor:
+#       - name: "Onduleur - Fourniture panneaux"
+#         select: "body"
+#         value_template: "{{ value.replace('W', '') | replace(',', '.') }}"
+#         unit_of_measurement: "Wh"
+#         device_class: energy
+#         state_class: total
+
+#   - resource: "http://192.168.1.38:8777/?GetLiveData&PlainText&Template05&APIKey=hypson1993"
+#     scan_interval: 2
+#     timeout: 30
+#     sensor:
+#       - name: "Onduleur - Fourniture batterie"
+#         select: "body"
+#         value_template: "{{ value.replace('W', '') | replace(',', '.') }}"
+#         unit_of_measurement: "Wh"
+#         device_class: energy
+#         state_class: total
+
+#   - resource: "http://192.168.1.38:8777/?GetLiveData&PlainText&Template06&APIKey=hypson1993"
+#     scan_interval: 15
+#     timeout: 30
+#     sensor:
+#       - name: "Onduleur - Mode de fonctionnement"
+#         select: "body"
+#         value_template: "{{ value }}"
+
+#   - resource: "http://192.168.1.38:8777/?GetLiveData&PlainText&Template07&APIKey=hypson1993"
+#     scan_interval: 5
+#     timeout: 30
+#     sensor:
+#       - name: "Onduleur - Capacité batterie"
+#         select: "body"
+#         value_template: "{{ value.replace('%', '') | replace(',', '.') }}"
+#         unit_of_measurement: "%"
+#         device_class: energy
+#         state_class: total
+
+#   - resource: "https://www.jechange.fr/energie/edf/tarifs/tempo"
+#     scan_interval: 120
+#     timeout: 30
+#     sensor:
+#       - name: "Prix kWh Tempo EDF"
+#         select: "div[property='schema:text']"
+#         value_template: >-
+#           {% set match = value | regex_findall_index("Le prix du kWh Tempo est actuellement de (\d+\.\d+)€") %}
+#           {{ match }}
+#         unit_of_measurement: "€"
+#         device_class: energy
+#         state_class: total
+
+# template:
+#   - sensor:
+#       - name: "Capacité batterie Wh"
+#         unit_of_measurement: "Wh"
+#         state: "{{ (51.2 * 120 * (states('sensor.onduleur_capacite_batterie') | float) * 0.01) | round(2) }}"
+#         device_class: energy
+#         state_class: total
+
+#   - sensor:
+#       - name: "technique - Batterie Energie sortante"
+#         unit_of_measurement: "Wh"
+#         state: >-
+#           {% if states('sensor.onduleur_fourniture_batterie') | float < 0 %}
+#             {{ states('sensor.onduleur_fourniture_batterie') | float | abs }}
+#           {% else %}
+#             0
+#           {% endif %}
+#         device_class: energy
+#         state_class: total
+
+#   - sensor:
+#       - name: "technique - Batterie Energie entrant"
+#         unit_of_measurement: "Wh"
+#         state: "{{ [states('sensor.onduleur_fourniture_batterie') | float, 0] | max }}"
+#         device_class: energy
+#         state_class: total
+
+#   - binary_sensor:
+#       - name: sensors_stagnant
+#         state: >-
+#           {{
+#             (as_timestamp(now()) - as_timestamp(states.sensor.onduleur_charge_totale.last_updated) > 100) and
+#             (as_timestamp(now()) - as_timestamp(states.sensor.onduleur_fourniture_batterie.last_updated) > 100) and
+#             (as_timestamp(now()) - as_timestamp(states.sensor.onduleur_fourniture_edf.last_updated) > 100) and
+#             (as_timestamp(now()) - as_timestamp(states.sensor.onduleur_fourniture_panneaux.last_updated) > 100)
+#           }}
+#         device_class: problem
+
+#   - binary_sensor:
+#       - name: "Onduleur est sur EDF"
+#         state: >
+#           {{ is_state('sensor.onduleur_mode_de_fonctionnement', 'Grid') }}
+#         device_class: power
+
+#   - binary_sensor:
+#       - name: "Onduleur est sur batterie/PV"
+#         state: >
+#           {{ is_state('sensor.onduleur_mode_de_fonctionnement', 'Battery') }}
+#         device_class: power
